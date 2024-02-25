@@ -28,4 +28,13 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  async update(id: number, newData: Partial<User>): Promise<User | null> {
+    const user = await this.usersRepository.findOneBy({id});
+    if (!user) {
+      return null; 
+    }
+    Object.assign(user, newData);
+    return await this.usersRepository.save(user);
+  }
 }
